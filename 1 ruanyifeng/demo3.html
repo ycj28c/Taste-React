@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+	<!-- 开发环境编码，正式环境应该在服务器预先编码 JSX语法-->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+	<script type="text/babel">
+      var arr = [
+        <h1 key="1">Hello world!</h1>,
+        <h2 key="2">React is awesome</h2>,
+      ];
+	  //JSX 允许直接在模板插入 JavaScript 变量。如果这个变量是一个数组，则会展开这个数组的所有成员
+      ReactDOM.render(
+        <div>{arr}</div>,
+        document.getElementById('example')
+      );
+	  //编译完毕的时候key="1"不见了，呵呵
+    </script>
+  </body>
+</html>

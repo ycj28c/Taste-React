@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+	<script type="text/babel">
+	//这是一个典型的ajax例子，读取了repo的API列表并展示
+      class RepoList extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = {
+            loading: true,
+            error: null,
+            data: null
+          };
+        }
+		//这个状态函数会实时的监控内部变化，比较重要
+        componentDidMount() {
+		  //这里是一个典型的promise处理，用的不多，不过看着挺简洁
+          this.props.promise.then(
+			//用this，直接就可以操作本身的state属性了，很灵活
+            value => this.setState({loading: false, data: value}),
+            error => this.setState({loading: false, error: error}));
+        }
+
+        render() {
+		  //状态一旦发生变化（componentDidMountd的promise状态变化），这里会实时更新
+          if (this.state.loading) {
+		  //如果Promise对象正在抓取数据（pending状态），组件显示"正在加载"；
+            return <span>Loading...</span>;
+          }
+          else if (this.state.error !== null) {
+		  //如果Promise对象报错（rejected状态），组件显示报错信息
+            return <span>Error: {this.state.error.message}</span>;
+          }
+          else {
+		    //如果Promise对象抓取数据成功（fulfilled状态），组件显示获取的数据。
+            var repos = this.state.data.items;
+			//这个map是javascript的函数写法，里面直接用<>套上html语句，{}套上变量，也是很灵活
+            var repoList = repos.map(function (repo, index) {
+              return (
+                <li key={index}><a href={repo.html_url}>{repo.name}</a> ({repo.stargazers_count} stars) <br/> {repo.description}</li>
+              );
+            });
+            return (
+              <main>
+                <h1>Most Popular JavaScript Projects in Github</h1>
+				//如果是一个array，则自动生成一堆ol，比较简洁
+                <ol>{repoList}</ol>
+              </main>
+            );
+          }
+        }
+      }
+
+      ReactDOM.render(
+	    //这里使用了javascript的原型promise,jquery的ajax获得到json直接丢给了promise
+        <RepoList promise={$.getJSON('https://api.github.com/search/repositories?q=javascript&sort=stars')} />,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+  </body>
+</html>

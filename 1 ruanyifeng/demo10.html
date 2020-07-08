@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+	<script type="text/babel">
+	//这是一个定时器的演示
+      class Hello extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = {
+            opacity: 1.0
+          };
+        }
+		//组件的生命周期分成三个状态：
+		//Mounting：已插入真实 DOM
+		//Updating：正在被重新渲染
+		//Unmounting：已移出真实 DOM
+		//React 为每个状态都提供了两种处理函数，will 函数在进入状态之前调用，did 函数在进入状态之后调用，三种状态共计五种处理函数。
+		//componentWillMount()
+		//componentDidMount()
+		//componentWillUpdate(object nextProps, object nextState)
+		//componentDidUpdate(object prevProps, object prevState)
+		//componentWillUnmount()
+        componentDidMount() { //componentDidMount()属于Mounting的一个处理函数，名字固定
+          this.timer = setInterval(function () {
+            var opacity = this.state.opacity;
+            opacity -= .05; //每次透明度减小
+            if (opacity < 0.1) {
+              opacity = 1.0;
+            }
+            this.setState({
+              opacity: opacity
+            });
+          }.bind(this), 100); //每个100毫秒变化
+        }
+
+        render() {
+          return (
+		   //实际上透明度的变化还是通过css的style来改变的
+		   //注意写法，这里有两个大括号，因为 React 组件样式是一个对象？？，所以第一重大括号表示这是 JavaScript 语法，第二重大括号表示样式对象。比较饶了
+            <div style={{opacity: this.state.opacity}}>
+              Hello {this.props.name}
+            </div>
+          );
+        }
+      }
+        
+      ReactDOM.render(
+        <Hello name="world"/>,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>

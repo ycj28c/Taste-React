@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+	<script type="text/babel">
+	//这是一个输入即打印的例子
+      class Input extends React.Component {
+        constructor(props) {
+          super(props)
+		  //用户在表单填入的内容，属于用户跟组件的互动，所以不能用 this.props 读取
+          this.state = {
+            value: 'Hello!'
+          }
+          this.handleChangeXXX = this.handleChange.bind(this)
+        }
+        handleChange(event) {
+		  //setState就是特定函数了，event.target算是javascript的
+          this.setState({ value: event.target.value });
+        }
+		//这里用一个value就关联上了所有变化
+        render() {
+          var value = this.state.value;
+          return (
+            <div>
+              <input type="text" value={value} onChange={this.handleChangeXXX} />
+              <p>{value}</p>
+            </div>
+          );
+        }
+      }
+        
+      ReactDOM.render(
+		<Input/>, 
+		document.getElementById('example')
+	  );
+    </script>
+  </body>
+</html>

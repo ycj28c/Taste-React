@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+	<!-- 包含在text/babel里面的就是JSX语法 -->
+	<script type="text/babel">
+	//组件并不是真实的 DOM 节点，而是存在于内存之中的一种数据结构，叫做虚拟 DOM （virtual DOM）。只有当它插入文档以后，才会变成真实的 DOM 。根据 React 的设计，所有的 DOM 变动，都先在虚拟 DOM 上发生，然后再将实际发生变动的部分，反映在真实 DOM上，这种算法叫做 DOM diff ，它可以极大提高网页的性能表现。
+      class MyComponent extends React.Component {
+        constructor(props) {
+          super(props); //连super都有了，用Java的看到这个很舒服
+          this.myTextInput = React.createRef(); //这里用到了一些react自己的函数，开始有点烦了
+          this.handleClick = this.handleClick.bind(this)
+        }
+        handleClick() {
+		  //就是focus myTextInput这个input
+          this.myTextInput.current.focus();
+		  console.log(11111); //试了下，是可以用javascript的
+        }
+        render() {
+          return (
+            <div>
+              <input id="xxx" type="text"  ref={this.myTextInput} />
+              <input type="button" value="Focus the text input" onClick={this.handleClick} />
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.render(
+        <MyComponent />,
+		//上面代码中，组件 MyComponent 的子节点有一个文本输入框，用于获取用户的输入。这时就必须获取真实的 DOM 节点，虚拟 DOM 是拿不到用户输入的。为了做到这一点，文本输入框必须有一个 ref 属性，然后 this.[refName] 就会返回这个真实的 DOM 节点。
+        document.getElementById('example')
+      );
+    </script>
+	<!-- 之后可以直接用js document.getElementById('xxx').value来获取输入框的值 -->
+  </body>
+</html>

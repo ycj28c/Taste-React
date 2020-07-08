@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+	<!-- 包含在text/babel里面的就是JSX语法 -->
+	<script type="text/babel">
+
+      var data = 123;
+
+      class MyTitle extends React.Component {
+	   //组件的属性可以接受任意值，字符串、对象、函数等等都可以。有时，我们需要一种机制，验证别人使用组件时，提供的参数是否符合要求。组件类的PropTypes属性，就是用来验证组件实例的属性是否符合要求。有点typescriptd的意思了。
+        static propTypes = {
+		  //这样一来，title属性就通不过验证了。控制台会显示一行错误信息
+          title: PropTypes.string.isRequired,
+        }
+        render() {
+          return <h1> {this.props.title} </h1>;
+        }
+      }
+
+      ReactDOM.render(
+        <MyTitle title={data} />,
+        document.getElementById('example')
+      );
+
+    </script>
+  </body>
+</html>
